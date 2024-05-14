@@ -140,9 +140,8 @@ def annotate_files_in_directory(root_folder, annotations_dict):
         annotations_dict (dict): Dictionnaire d'annotations contenant les informations d'annotation.
 
     Returns:
-        list: Liste de tuples contenant les annotations pour chaque token du corpus
+        None (Les fichiers annotés sont sauvegardés individuellement).
     """
-    # Parcours des fichiers .txt (corpus)
     for root, dirs, files in os.walk(root_folder):
         for filename in files:
             if filename.endswith('.txt'):
@@ -153,10 +152,9 @@ def annotate_files_in_directory(root_folder, annotations_dict):
                 # Initialiser la liste d'annotations pour le fichier
                 annotations = []
 
-                # Comparer le contenu du fichier avec les clés du dictionnaire d'annotations
+                # Parcourir les termes du dictionnaire d'annotations
                 for key in annotations_dict.keys():
                     if key in content:
-                        # Extraire les annotations pour la clé (forme longue ou abréviation)
                         if len(key.split()) > 1:
                             # Il s'agit d'une forme longue
                             key_annotations = extract_long_form_annotations(annotations_dict, key)
@@ -167,21 +165,25 @@ def annotate_files_in_directory(root_folder, annotations_dict):
                         if key_annotations:
                             annotations.extend(key_annotations)
 
-                    else:
-                        # Si la clé n'est pas trouvée dans le corpus, annoter le token en B-O
-                        tokens = key.split()
-                        annotations.extend([(token, 'B-O') for token in tokens])
-
-                return annotations
-            
-                # Enregistrer les annotations dans un fichier de sortie ou imprimer les résultats
-                # Note : cette section est en commentaire cette fonction va être importée en tant que module
+                # Créer un fichier de sortie annoté pour chaque fichier du corpus
+                # Fonctionnalité commentée
                 # output_filename = filename.replace('.txt', '_annotated.txt')
                 # output_path = os.path.join(root, output_filename)
                 # with open(output_path, 'w', encoding='utf-8') as output_file:
-                #     for token, label in annotations:
-                #         output_file.write(f"{token}\t{label}\n")
+                #     # Parcourir le contenu du fichier original et écrire les annotations
+                #     tokens = content.split()
+                #     for token in tokens:
+                #         found_annotation = False
+                #         for ann_token, label in annotations:
+                #             if token == ann_token:
+                #                 output_file.write(f"{token}\t{label}\n")
+                #                 found_annotation = True
+                #                 break
+                #         if not found_annotation:
+                #             output_file.write(f"{token}\tB-O\n")
 
+                return annotations
 
+# Exemple d'utilisation
 corpus_folder = '../../data/clean'
 annotate_files_in_directory(corpus_folder, annotations_dict)
