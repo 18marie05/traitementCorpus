@@ -48,7 +48,7 @@ def process_abbreviation_files(folder_path):
 
 
 # Utilisation de la fonction pour traiter les fichiers d'abréviations
-folder_path = '../data/abbreviations/abbreviations-clean/'
+folder_path = '../../data/abbreviations/abbreviations-clean/'
 annotations = process_abbreviation_files(folder_path)
 
 print(annotations)
@@ -107,6 +107,11 @@ def annotate_files_in_directory(root_folder, annotations_dict):
                         if key_annotations:
                             annotations.extend(key_annotations)
 
+                    else:
+                        # Si la clé n'est pas trouvée dans le corpus, annoter le token en B-O
+                        tokens = key.split()
+                        annotations.extend([(token, 'B-O') for token in tokens])
+
                 return annotations
             
                 # Enregistrer les annotations dans un fichier de sortie ou imprimer les résultats
@@ -118,5 +123,5 @@ def annotate_files_in_directory(root_folder, annotations_dict):
                 #         output_file.write(f"{token}\t{label}\n")
 
 
-corpus_folder = '../data/clean'
+corpus_folder = '../../data/clean'
 annotate_files_in_directory(corpus_folder, annotations_dict)
