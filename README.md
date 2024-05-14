@@ -261,7 +261,7 @@ Avec `datasets`, j'ai établit une partition test à 0.1.
 
 Voici le split renvoyé par la commande `dataset.train_test_split(test_size=0.1)` qui utilise `datasets`.  
 
-DatasetDict({
+```DatasetDict({
     train: Dataset({
         features: ['tokens', 'pos_tags', 'ner_tags'],
         num_rows: 1818
@@ -270,7 +270,7 @@ DatasetDict({
         features: ['tokens', 'pos_tags', 'ner_tags'],
         num_rows: 203
     })
-})
+})```
 
 
 Une fois le travail terminé, on peut passer à la création de la Dataset Card dans un fichier **.yaml**. Cette carte se trouve à la racine du dépôt dans le fichier `datasetCard.yaml`.  
