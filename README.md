@@ -188,7 +188,7 @@ Lorsqu'on accède aux informations de lignes ou colonnes, on remarque que les ty
 # Séance 4 - Statistiques et visualisation
 ---
 
-Pour cette séance, j'ai choisi différentes statistiques que j'ai trouvées pertinentes pour mon corpus.  
+Pour cette séance, j'ai choisi différentes statistiques que j'ai trouvées pertinentes pour mon corpus. Elles se trouvent dans le notebook `notebooks/visualise_data.ipynb`.  
 
 J'ai réalisé des statistiques basiques comme la taille des fichiers de mon corpus.  
 Puis j'ai voulu inspecter les tokens annotés comme des formes longues et abréviations : il y en a très peu comparé au nombre de tokens qui sont annotés B-O.
@@ -203,5 +203,52 @@ Ensuite, j'ai réalisé un graphique avec la Loi de Zipf pour connaître la fré
 Pour finir, j'ai décidé de reproduire les statistiques présentées dans le papier de recherche du corpus de référence : un pie plot qui représente la taille des abréviations (en nombre de caractères) et un autre pie plot qui représente la taille des formes longues (en nombre de tokens).  
 Le premier graphique a montré que la majorité des abréviations contiennent 3 puis 4 puis 5 caractères.  
 Le second a montré que la majorité des formes longues contiennent 3 puis 2 puis 4 tokens.  
+
+
+# Séance 5 - Corrélation et métriques
+---
+
+### Corrélations et p-value
+
+Pour mon corpus, j'ai commencé par évaluer différentes corrélations entre deux variables à chaque fois :  
+
+- la corrélation entre la taille des phrases du corpus (colonne *tokens*) et la présence de labels d'abréviations et de formes longues (colonne *ner_tags*)
+- la corrélation entre la taille des phrases du corpus (colonne *tokens*) et le nombre de POS NOUN (colonne *pos_tags*)
+
+Pour la première corrélation, j'ai obtenu un résultat de 0.47. Ce résultat laisse penser que la corrélation entre ces deux variables est positive. Cela signifie que plus une phrase est longue, plus le nombre d'annotation B-AC, B-LF et I-LF est élevé.  
+On vérifie la p-value pour savoir si ce résultat est significatif. La p-value résultante est de 7.075486952222668e-111. Cette valeur est inférieure au seuil de 0.05. On peut donc dire que ce résultat de corrélation positive est significatif.  
+
+Pour la deuxième corrélation, j'ai choisi d'étudier la relation entre la taille des phrases et la présence du POS NOUN car dans les statistiques réalisées précédemment, j'ai pu voir que la POS la plus présente dans le corpus est le label NOUN. 
+Voici le résultat de la corrélation : 0.67. Ce résultat témoigne d'une corrélation relativement élevée entre les deux variables. On calcule la p-value pour savoir si ce résultat est significatif. La p-value est de 1.4438239516504553e-259. Une fois de plus cette valeur est significative.
+Ainsi, on peut dire que plus la phrase est longue, plus le nombre de pos NOUN par phrase est élevé.  
+
+
+### Nettoyage des données
+
+Concernant le nettoyage des données, lors des statistiques, j'ai remarqué que certains fichiers étaient plus courts que d'autres. Cependant, après inspection de ces fichiers, je me suis rendue compte qu'ils comptenaient des abbréviations et formes longues : j'ai donc décidé de ne pas les supprimer, puisque le nombre d'abréviations et formes longues n'est pas très élevé sur le corpus global.  
+
+
+### Augmentation des données
+
+Pour la partie augmentation des données, j'ai tenter d'utiliser cette bibliothèque et ce module : `from imblearn.over_sampling import RandomOverSampler` mais je n'y suis pas parvenue. 
+Ma réflexion pour augmenter mes données était le suivant :  
+Étant donné le fait que beaucoup de phrases ne contiennent uniquement des labels B-O (labels qui ne sont ni abréviations ni formes longues), ce n'est pas nécessaire d'augmenter ces données. Je souhaitais donc augmenter uniquement les lignes où la colonne *ner_tags* contenait des labels B-AC, B-LF et I-LF.  
+Je n'y suis pas parvenue mais c'est une piste à explorer pour ce corpus.  
+
+
+### Métriques d'évaluation
+
+La dernière étape consiste en l'évaluation du corpus avec différentes métriques. Comme mon corpus est utile pour une tâche de classification, je comptais calculer les métriques de rappel, précision, F-mesure et accuracy, puisque celles-ci sont généralement utilisées pour évaluer des modèles pour cette tâche.  
+
+Le papier de recherche du corpus de référence utilise également ces mesures pour évaluer les modèles entraînés sur leur corpus.
+
+Cependant, je n'ai pas bien compris sur quoi évaluer les métriques puisque le corpus n'a été entrainé avec aucun modèle.  
+
+Le papier ne mentionne pas de métriques pour évaluer le corpus, en dehors des statistiques, seulement pour évaluer le corpus une fois entraîné sur un modèle.
+Ils n'ont pas de métriques spécifiques pour leur corpus, contrairement à d'autres corpus comme **Glue** ou **SQuaD**.
+
+J'ai aussi consulté la documentation de Evaluate sur HuggingFace. Dans leurs catégories de métriques pour des tâches spécifiques, ils mentionnent _**seqeval**_, souvent utilisé pour une tâche de NER.
+Cette librairie peut être imporée avec `seqeval.metrics`. Il est possible d'effectuer des comparaisons d'annotations entre les labels *true* et *predicted*.  
+Mais encore une fois, je n'ai pas compris comment effectuer des métriques alors que je n'ai pas de distinction entre *true* et *predicted* puisque le corpus n'a pas servi à un modèle.  
 
 
