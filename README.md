@@ -14,9 +14,13 @@ Le dossier **data/** contient :
 - **abbreviations/abbreviations-clean/** et **abbreviations-raw/** qui contiennent les abéviations récupérées pour chaque articles
 - **annotated/** qui contient le corpus annoté en ner_tags pour chaque articles
 - **clean/** qui est le corpus nettoyé
-- **raw/** qui est le corpus brut
 - **to-scrap/** qui est le dossier des urls principales à scrap
 - **corpus.csv** qui est le fichier du corpus au format csv
+Le corpus brut **raw/** ne figure pas dans le dossier **data/** car il contenait des fichiers plus volumineux : il est dans le .gitignore. 
+
+Le dossier **notebooks/** contient les notebooks de visualisation des statistiques et de l'ouverture du corpus avec pandas.
+
+Le dossier **script/** contient tous les scripts utilisés pour ce travail.
 
 
 **Note**
@@ -177,4 +181,8 @@ On obtient les informations suivantes :
 Consulter ces informations nous permet de voir que les colonnes de mon corpus sont les mêmes que celles présentes dans le corpus de référence.
 
 Lorsqu'on accède aux informations de lignes ou colonnes, on remarque que les types d'informations renvoyées sont également les mêmes : on a bien les tokens dans la colonne `tokens`, les pos_tags dans la colonne `pos_tags` et les ner_tags customisés pour abréviations et formes longues dans la colonne `ner_tags`.  
+
+
+# Séance 4 - Statistiques et visualisation
+---
 
