@@ -2,7 +2,25 @@
 M1 TAL - Outil Traitement de Corpus
 ---
 
+
 **PRECISIONS** : Pour ce travail, de constitution de corpus, tout a été réalisé sur la branche `travail` de mon dépôt GitHub, puis tout a été merge sur la branche `main` à la fin.
+
+**STRUCTURE DU DÉPÔT**
+
+Mon dépôt est structuré de cette façon :  
+
+Le dossier **data/** contient :  
+
+- **abbreviations/abbreviations-clean/** et **abbreviations-raw/** qui contiennent les abéviations récupérées pour chaque articles
+- **annotated/** qui contient le corpus annoté en ner_tags pour chaque articles
+- **clean/** qui est le corpus nettoyé
+- **raw/** qui est le corpus brut
+- **to-scrap/** qui est le dossier des urls principales à scrap
+- **corpus.csv** qui est le fichier du corpus au format csv
+
+
+**Note**
+Entre le moment où les scripts ont été écrits afin de constituer le corpus et la fin du travail, des dossiers ont été bougés afin d'obtenir une structure plus claire, mais les chemins dans les scripts n'ont pas été changés.
 
 
 # Séance 1 - Présentation du corpus 
