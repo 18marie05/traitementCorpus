@@ -54,3 +54,77 @@ Le corpus contient 3 colonnes :
 - les tags d'entités nommées : colonne *ner_tags*
 
 
+# Séance 2 - Constitution du corpus
+---
+
+### Constitution du corpus
+Le but est maintenant de récupérer les données dont nous aurons besoin pour constituer le corpus à la même manière que PLOD/CW.  
+Pour cela, j'ai effectué plusieurs tentatives avec différents outils : *requests*; *beautifulSoup* et *lxml*.  
+Finalement, j'ai décidé d'utiliser les 3 ainsi que *selenium* afin d'effectuer un scraping dynamique.
+
+J'ai commencé par récupérer les 4 liens qui vont servir à récupérer les données textuelles avec `get_links_to_scrap.py` avec *beautifulSoup*, *requests* et *lxml*. Ensuite, j'ai récupéré ses liens pour les scraper avec *selenium* dans le script `scrap_selenium.py`.  
+Ce script récupère le contenu textuel de 15 liens pour les différentes catégories sélectionnées puis les stocke dans `data/raw/{category}` où *category* est le nom du dossier pour chaque catégorie.
+
+Ensuite, il faut récupérer les abbréviations pour chaque article, si la section est disponible. J'ai réalisé cette tâche avec *selenium* également. Puis, pour chaque catégorie, on récupère 1 fichier dans `data/abbreviations/abbreviations-raw/`. Il va falloir effectuer un traitement supplémentaire avec `clean_abbreviations.py`. Comme il n'y a pas forcément de partie *Abbreviations* pour chaque article, mais qu'elles ne sont pas dans une section particulière, seulement dans une balise *<p>*, il est difficile de les récupérer d'un coup.  
+A la fin de ce traitement, il ne reste plus que deux fichiers : *abbreviations_Biology.txt* et *abbreviations_Medicine.txt*. Il n'y avait aucune section *Abbreviations* dans les catégories *Computational Biology* ni *Genetics*. Les résultats sont stockés dans `data/abbreviations/abbreviations-clean/`.  
+
+Ainsi, pour la suite de cette constitution de corpus, nous allons travailler sur les catégories restantes *Medicine* et *Biology*.  
+
+### Nettoyage
+
+Après cette récupération, il faut tout nettoyer car le corpus récupéré est "sale". A l'aide du script `clean_corpus.py`, on va retirer de notre corpus :  
+
+- tout ce qui est dans la partie Figure Citations et toutes les References
+- les liens, 
+- les patterns du type [ 10 ] ou [ 10 - 13 ] qui sont des renvois vers d'autres liens ou figures, 
+- les patterns du type ( Fig 5B and 5C )
+- les titres des sections : *Introduction*, *Citations*, *Abstract*  
+
+Cette partie nous a fait perdre trois fichiers : probablement des fichiers mal scrapés ou qui n'avaient pas la même structure que les autres, rendant leur nettoyage non généralisable.  
+Le corpus nettoyé se trouve dans `data/clean/`.
+
+
+### Constitution des NER tags
+
+Après avoir récupérer toutes ces informations, il faut constituer les abbréviations avec leurs formes longues.  
+Voici un exemple du corpus de référence : la phrase préalablement segmentée *[ "For", "this", "purpose", "the", "Gothenburg", "Young", "Persons", "Empowerment", "Scale", "(", "GYPES", ")", "was", "developed", "." ]* sera annotée *[ "B-O", "B-O", "B-O", "B-O", "B-LF", "I-LF", "I-LF", "I-LF", "I-LF", "B-O", "B-AC", "B-O", "B-O", "B-O", "B-O" ]*.  
+Les labems `B-O`, `B-LF`, `I-F` et `B-AC` sont des labels customisés puisqu'ils ne correspondent pas aux labels typiques obtenus lors de processus d'annotation automatique par des outils comme SpaCy par exemple. Les annotations ont été faites avec le schéma BIO.  
+Voici les labels : 
+**B-LF** correspond à *Begin Long Form*  
+**I-LF** correspond à *Inside Long Form*  
+**B-AC** correspond à *Begin Abbreviation*  
+**B-O** correspond à tous le reste (donc les tokens qui ne sont ni des abbréviations, ni des formes longues d'une abbréviation).  
+
+Voici les différentes étapes pour parvenir à reconstituer la colonne *ner_tags*.  
+Après avoir récupéré et nettoyé les abbréviations et leurs formes longues *(comme expliqué dans la partie **Constitution du corpus**)*, j'ai formatté les abbréviations afin d'obtenir un dictionnaire dans le script `abbreviations_formated.py`.
+
+Voici un exemple du dictionnaire : 
+
+> `{'ATGL': 'B-AC', 'adipose triglyceride lipase': [{'token': 'adipose', 'label': 'B-LF'}, {'token': 'triglyceride', 'label': 'I-LF'}, {'token': 'lipase', 'label': 'I-LF'}], 'CKD': 'B-AC', 'chronic kidney disease': [{'token': 'chronic', 'label': 'B-LF'}, {'token': 'kidney', 'label': 'I-LF'}, {'token': 'disease', 'label': 'I-LF'}], 'CLEM': 'B-AC', 'correlative light electron microscopy': [{'token': 'correlative', 'label': 'B-LF'}, {'token': 'light', 'label': 'I-LF'}, {'token': 'electron', 'label': 'I-LF'}, {'token': 'microscopy', 'label': 'I-LF'}], 'CNS': 'B-AC', 'central nervous system': [{'token': 'central', 'label': 'B-LF'}, {'token': 'nervous', 'label': 'I-LF'}, {'token': 'system', 'label': 'I-LF'}], 'Cubn': 'B-AC', 'Cubilin': [{'token': 'Cubilin', 'label': 'B-LF'}], 'DGAT1': 'B-AC', 'diglyceride acyltransferase 1': [{'token': 'diglyceride', 'label': 'B-LF'}, {'token': 'acyltransferase', 'label': 'I-LF'}, {'token': '1', 'label': 'I-LF'}]}`
+
+J'ai choisi une méthode de dictionnaire avec le token (abbréviation ou forme longue) comme clés et l'annotation BIO en valeur, afin de pouvoir accéder à la valeur en fonction de la clé rencontrée dans le corpus.
+
+Puis dans ce même script, j'ai dû passer par des fonctions intermédiaires avant de passer à la construction du .csv.  
+
+Les fonctions `extract_long_form_annotations()`, `extract_abbreviation_annotation()` et `annotate_files_in_directory()` permettent de récupérer les annotations du dictionnaire et d'annoter le corpus. J'ai choisi de générer des fichiers .txt afin de visualiser plus facilement les annotations pour chaque fichier. Cette fonctionnalité a ensuite été commentée pour réutiliser les fonctions pour construire le csv.
+
+
+
+### Constitution du csv
+
+Voici les trois colonnes que je vais reconstituer :  
+
+- la phrase tokenisée : colonne *tokens*
+- les part-of-speech : colonne *pos_tags*
+- les tags d'entités nommées : colonne *ner_tags*
+
+Pour cela, je crée le script `to_csv.py`. J'utilise spacy pour la tokenisation avec le modèle *en_core_web_sm* pour l'anglais, ainsi que pour l'étiquetage en pos.
+
+La tokenisation et l'étiquetage en pos était simple, puisque ces fonctionnalités sont disponibles dans SpaCy.  
+
+Pour l'annotation en *ner_tags*, c'était plus compliqué puisqu'il ne s'agit pas d'une annotation classique en entités nommées, mais d'une annotation des abbréviations et de leurs formes longues.  
+L'annotation pour les ner_tags a été réalisée automatiquement sur la base des tokens récupérés dans la partie *Abbreviations*. Il se peut que certains n'aient pas été reconnus s'il n'étaient pas dans la liste.  
+
+Ce script réutilise les fonctions `extract_long_form_annotations()`, `extract_abbreviation_annotation()` et `annotate_files_in_directory()` mentionnés précédemment qui ont été importées.
+
+Le corpus sous forme de .csv se trouve dans `data/clean/corpus-csv/corpus.csv`.  
