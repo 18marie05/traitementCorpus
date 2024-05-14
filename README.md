@@ -147,21 +147,14 @@ Le corpus est correctement lu avec les deux bibliothèques mais l'affichage en c
 
 J'ai également pu ouvrir mon corpus avec la librarie `datasets`. On obtient les informations suivantes : 
 
-> ```Dataset({
-    features: ['tokens', 'pos_tags', 'ner_tags'],
-    num_rows: 2021
-})```
-
+> `Dataset({features: ['tokens', 'pos_tags', 'ner_tags'], num_rows: 2021})`  
 
 Ensuite, j'ai ouvert mon corpus PLOD/CW de référence :  
 > `dataset = load_dataset("surrey-nlp/PLOD-CW", split="train")`
 
 On obtient les informations suivantes :  
 
-> ```Dataset({
-    features: ['tokens', 'pos_tags', 'ner_tags'],
-    num_rows: 1072
-})```
+> ```Dataset({features: ['tokens', 'pos_tags', 'ner_tags'], num_rows: 1072})```
 
 Consulter ces informations nous permet de voir que les colonnes de mon corpus sont les mêmes que celles présentes dans le corpus de référence.
 
