@@ -2,6 +2,8 @@
 M1 TAL - Outil Traitement de Corpus
 ---
 
+**PRECISIONS** : Pour ce travail, de constitution de corpus, tout a été réalisé sur la branche `travail` de mon dépôt GitHub, puis tout a été merge sur la branche `main` à la fin.
+
 
 # Séance 1 - Présentation du corpus 
 ---
@@ -128,3 +130,40 @@ L'annotation pour les ner_tags a été réalisée automatiquement sur la base de
 Ce script réutilise les fonctions `extract_long_form_annotations()`, `extract_abbreviation_annotation()` et `annotate_files_in_directory()` mentionnés précédemment qui ont été importées.
 
 Le corpus sous forme de .csv se trouve dans `data/clean/corpus-csv/corpus.csv`.  
+
+
+# Séance 3 - Exploration du corpus
+---
+
+Pour cette séance, le but était d'ouvrir et d'explorer notre corpus avec différents outils et de le comparer avec le corpus de référence.  
+Pour cela, j'ai utilisé un notebook qui se trouve ici : `notebooks/open_data.ipynb`.  
+
+Maintenant que le corpus est constitué au format csv, j'ai pu tester différents outils : 
+
+- la bibliothèque csv
+- la bibliothèque pandas
+
+Le corpus est correctement lu avec les deux bibliothèques mais l'affichage en colonnes mis à disposition par pandas est beaucoup plus lisible : on peut observer correctement les trois colonnes *tokens*, *pos_tags*, *ner_tags*.  
+
+J'ai également pu ouvrir mon corpus avec la librarie `datasets`. On obtient les informations suivantes : 
+
+> ```Dataset({
+    features: ['tokens', 'pos_tags', 'ner_tags'],
+    num_rows: 2021
+})```
+
+
+Ensuite, j'ai ouvert mon corpus PLOD/CW de référence :  
+> `dataset = load_dataset("surrey-nlp/PLOD-CW", split="train")`
+
+On obtient les informations suivantes :  
+
+> ```Dataset({
+    features: ['tokens', 'pos_tags', 'ner_tags'],
+    num_rows: 1072
+})```
+
+Consulter ces informations nous permet de voir que les colonnes de mon corpus sont les mêmes que celles présentes dans le corpus de référence.
+
+Lorsqu'on accède aux informations de lignes ou colonnes, on remarque que les types d'informations renvoyées sont également les mêmes : on a bien les tokens dans la colonne `tokens`, les pos_tags dans la colonne `pos_tags` et les ner_tags customisés pour abréviations et formes longues dans la colonne `ner_tags`.  
+
