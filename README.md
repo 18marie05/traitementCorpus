@@ -10,14 +10,14 @@ M1 TAL - Outil Traitement de Corpus
 
 ## Tâche à réaliser
 
-La tâche que je souhaite réaliser est une tâche de reconnaissance automatique d'abbréviations et de leurs formes longues dans un corpus textuel.  
+La tâche que je souhaite réaliser est une tâche de reconnaissance automatique d'abréviations et de leurs formes longues dans un corpus textuel.  
 On se concentre sur un corpus appartenant au vocabulaire médical et scientifique.
 
 ## Corpus
 
 Le corpus choisi qui correspond à cette tâche est le corpus PLOD-CW accessible ici : [PLOD-CW dataset](https://huggingface.co/datasets/surrey-nlp/PLOD-CW)  
 
-Ce corpus se concentre sur la reconnaissance d'abbréviations dans le contexte médical. Pour cela, il va falloir procéder à la récupération d'articles publiés dans les journaux PLOS, en accès libre.  
+Ce corpus se concentre sur la reconnaissance d'abréviations dans le contexte médical. Pour cela, il va falloir procéder à la récupération d'articles publiés dans les journaux PLOS, en accès libre.  
 
 Le corpus fait entre 100k et 1M de données. Les créateurs de ce corpus sont : Leonardo Zilio, Hadeel Saadany, Prashant Sharma, Shenbin Qian, Diptesh Kanojia et Constantin Orasan. Il porte uniquement sur de l'anglais.  
 
@@ -26,7 +26,7 @@ Le corpus fait entre 100k et 1M de données. Les créateurs de ce corpus sont : 
 
 La tâche principale pour laquelle ce corpus peut-être utilisé est le _**token classification**_. Sa sous-tâche est le *ner*, named-entity-recognition.  
 
-Ce corpus est donc utile dans la reconnaissance des abbréviations, faisant partie des entités nommées. Le but principal est d'utiliser un corpus technique et médical afin de participer à la reconnaissance de ces abbréviations, puis de pouvoir les associer avec leurs formes longues.  
+Ce corpus est donc utile dans la reconnaissance des abréviations, faisant partie des entités nommées. Le but principal est d'utiliser un corpus technique et médical afin de participer à la reconnaissance de ces abréviations, puis de pouvoir les associer avec leurs formes longues.  
 
 Il a été utilisé pour entraîner différents modèles :  
 
@@ -38,7 +38,7 @@ Les modèles ayant utilisé ce corpus d'entraînement obtiennent des résultats 
 
 ## A savoir
 
-Dans le NLP, la reconnaissance des abbréviations présente un réel challenge. C'est pourquoi ce corpus a été créé. Les journaux PLOS présentent un réel intérêt, puisque dans chaque article, il y a une section *Abbréviations* qui contient l'abbréviation et sa forme longue.  
+Dans le NLP, la reconnaissance des abréviations présente un réel challenge. C'est pourquoi ce corpus a été créé. Les journaux PLOS présentent un réel intérêt, puisque dans chaque article, il y a une section *Abbreviations* qui contient l'abréviation et sa forme longue.  
 
 Pour réaliser ce travail et reconstituer ce corpus, on va diminuer la taille du corpus a récupérer. De plus, on va se limiter à 4 catégories du journal PLOS :  
 
@@ -67,7 +67,7 @@ Finalement, j'ai décidé d'utiliser les 3 ainsi que *selenium* afin d'effectuer
 J'ai commencé par récupérer les 4 liens qui vont servir à récupérer les données textuelles avec `get_links_to_scrap.py` avec *beautifulSoup*, *requests* et *lxml*. Ensuite, j'ai récupéré ses liens pour les scraper avec *selenium* dans le script `scrap_selenium.py`.  
 Ce script récupère le contenu textuel de 15 liens pour les différentes catégories sélectionnées puis les stocke dans `data/raw/{category}` où *category* est le nom du dossier pour chaque catégorie.
 
-Ensuite, il faut récupérer les abbréviations pour chaque article, si la section est disponible. J'ai réalisé cette tâche avec *selenium* également. Puis, pour chaque catégorie, on récupère 1 fichier dans `data/abbreviations/abbreviations-raw/`. Il va falloir effectuer un traitement supplémentaire avec `clean_abbreviations.py`. Comme il n'y a pas forcément de partie *Abbreviations* pour chaque article, mais qu'elles ne sont pas dans une section particulière, seulement dans une balise *<p>*, il est difficile de les récupérer d'un coup.  
+Ensuite, il faut récupérer les abréviations pour chaque article, si la section est disponible. J'ai réalisé cette tâche avec *selenium* également. Puis, pour chaque catégorie, on récupère 1 fichier dans `data/abbreviations/abbreviations-raw/`. Il va falloir effectuer un traitement supplémentaire avec `clean_abbreviations.py`. Comme il n'y a pas forcément de partie *Abbreviations* pour chaque article, mais qu'elles ne sont pas dans une section particulière, seulement dans une balise *<p>*, il est difficile de les récupérer d'un coup.  
 A la fin de ce traitement, il ne reste plus que deux fichiers : *abbreviations_Biology.txt* et *abbreviations_Medicine.txt*. Il n'y avait aucune section *Abbreviations* dans les catégories *Computational Biology* ni *Genetics*. Les résultats sont stockés dans `data/abbreviations/abbreviations-clean/`.  
 
 Ainsi, pour la suite de cette constitution de corpus, nous allons travailler sur les catégories restantes *Medicine* et *Biology*.  
@@ -88,23 +88,23 @@ Le corpus nettoyé se trouve dans `data/clean/`.
 
 ### Constitution des NER tags
 
-Après avoir récupérer toutes ces informations, il faut constituer les abbréviations avec leurs formes longues.  
+Après avoir récupérer toutes ces informations, il faut constituer les abréviations avec leurs formes longues.  
 Voici un exemple du corpus de référence : la phrase préalablement segmentée *[ "For", "this", "purpose", "the", "Gothenburg", "Young", "Persons", "Empowerment", "Scale", "(", "GYPES", ")", "was", "developed", "." ]* sera annotée *[ "B-O", "B-O", "B-O", "B-O", "B-LF", "I-LF", "I-LF", "I-LF", "I-LF", "B-O", "B-AC", "B-O", "B-O", "B-O", "B-O" ]*.  
 Les labems `B-O`, `B-LF`, `I-F` et `B-AC` sont des labels customisés puisqu'ils ne correspondent pas aux labels typiques obtenus lors de processus d'annotation automatique par des outils comme SpaCy par exemple. Les annotations ont été faites avec le schéma BIO.  
 Voici les labels : 
 **B-LF** correspond à *Begin Long Form*  
 **I-LF** correspond à *Inside Long Form*  
 **B-AC** correspond à *Begin Abbreviation*  
-**B-O** correspond à tous le reste (donc les tokens qui ne sont ni des abbréviations, ni des formes longues d'une abbréviation).  
+**B-O** correspond à tous le reste (donc les tokens qui ne sont ni des abréviations, ni des formes longues d'une abréviation).  
 
 Voici les différentes étapes pour parvenir à reconstituer la colonne *ner_tags*.  
-Après avoir récupéré et nettoyé les abbréviations et leurs formes longues *(comme expliqué dans la partie **Constitution du corpus**)*, j'ai formatté les abbréviations afin d'obtenir un dictionnaire dans le script `abbreviations_formated.py`.
+Après avoir récupéré et nettoyé les abréviations et leurs formes longues *(comme expliqué dans la partie **Constitution du corpus**)*, j'ai formatté les abréviations afin d'obtenir un dictionnaire dans le script `abbreviations_formated.py`.
 
 Voici un exemple du dictionnaire : 
 
 > `{'ATGL': 'B-AC', 'adipose triglyceride lipase': [{'token': 'adipose', 'label': 'B-LF'}, {'token': 'triglyceride', 'label': 'I-LF'}, {'token': 'lipase', 'label': 'I-LF'}], 'CKD': 'B-AC', 'chronic kidney disease': [{'token': 'chronic', 'label': 'B-LF'}, {'token': 'kidney', 'label': 'I-LF'}, {'token': 'disease', 'label': 'I-LF'}], 'CLEM': 'B-AC', 'correlative light electron microscopy': [{'token': 'correlative', 'label': 'B-LF'}, {'token': 'light', 'label': 'I-LF'}, {'token': 'electron', 'label': 'I-LF'}, {'token': 'microscopy', 'label': 'I-LF'}], 'CNS': 'B-AC', 'central nervous system': [{'token': 'central', 'label': 'B-LF'}, {'token': 'nervous', 'label': 'I-LF'}, {'token': 'system', 'label': 'I-LF'}], 'Cubn': 'B-AC', 'Cubilin': [{'token': 'Cubilin', 'label': 'B-LF'}], 'DGAT1': 'B-AC', 'diglyceride acyltransferase 1': [{'token': 'diglyceride', 'label': 'B-LF'}, {'token': 'acyltransferase', 'label': 'I-LF'}, {'token': '1', 'label': 'I-LF'}]}`
 
-J'ai choisi une méthode de dictionnaire avec le token (abbréviation ou forme longue) comme clés et l'annotation BIO en valeur, afin de pouvoir accéder à la valeur en fonction de la clé rencontrée dans le corpus.
+J'ai choisi une méthode de dictionnaire avec le token (abréviation ou forme longue) comme clés et l'annotation BIO en valeur, afin de pouvoir accéder à la valeur en fonction de la clé rencontrée dans le corpus.
 
 Puis dans ce même script, j'ai dû passer par des fonctions intermédiaires avant de passer à la construction du .csv.  
 
@@ -124,7 +124,7 @@ Pour cela, je crée le script `to_csv.py`. J'utilise spacy pour la tokenisation 
 
 La tokenisation et l'étiquetage en pos était simple, puisque ces fonctionnalités sont disponibles dans SpaCy.  
 
-Pour l'annotation en *ner_tags*, c'était plus compliqué puisqu'il ne s'agit pas d'une annotation classique en entités nommées, mais d'une annotation des abbréviations et de leurs formes longues.  
+Pour l'annotation en *ner_tags*, c'était plus compliqué puisqu'il ne s'agit pas d'une annotation classique en entités nommées, mais d'une annotation des abréviations et de leurs formes longues.  
 L'annotation pour les ner_tags a été réalisée automatiquement sur la base des tokens récupérés dans la partie *Abbreviations*. Il se peut que certains n'aient pas été reconnus s'il n'étaient pas dans la liste.  
 
 Ce script réutilise les fonctions `extract_long_form_annotations()`, `extract_abbreviation_annotation()` et `annotate_files_in_directory()` mentionnés précédemment qui ont été importées.
