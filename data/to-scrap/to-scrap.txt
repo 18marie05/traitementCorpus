@@ -1,0 +1,4 @@
+https://journals.plos.org/plosbiology/search?sortOrder=DATE_NEWEST_FIRST&filterStartDate=2024-04-10&filterEndDate=2024-05-10&filterJournals=PLoSBiology&q=
+https://journals.plos.org/ploscompbiol/search?sortOrder=DATE_NEWEST_FIRST&filterStartDate=2024-04-10&filterEndDate=2024-05-10&filterJournals=PLoSCompBiol&q=
+https://journals.plos.org/plosgenetics/search?sortOrder=DATE_NEWEST_FIRST&filterStartDate=2024-04-10&filterEndDate=2024-05-10&filterJournals=PLoSGenetics&q=
+https://journals.plos.org/plosmedicine/search?sortOrder=DATE_NEWEST_FIRST&filterStartDate=2024-04-10&filterEndDate=2024-05-10&filterJournals=PLoSMedicine&q=

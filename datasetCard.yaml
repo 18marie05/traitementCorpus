@@ -1,0 +1,14 @@
+annotations_creators: 
+- Marie Delporte-Landat
+language: 
+- en
+multilinguality:
+- monolingual
+size_categories:
+- 10K-100K
+pretty_name: abb_lf_taggings
+license: CC-BY-NC
+task_categories:
+- Token Classification
+sub-tasks:
+- named-entity-recognition
