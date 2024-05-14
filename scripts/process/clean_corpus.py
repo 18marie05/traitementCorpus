@@ -1,9 +1,42 @@
 import os
 import re
 
+"""
+Ce script parcourt de manière récursive tous les fichiers `.txt` à partir d'un dossier principal spécifié dans la variable `dossier`.
+Puis il applique plusieurs traitement spécifiques afin de nettoyer ces fichiers.
+Les modifications apportées sont écrites dans ces mêmes fichiers.
+
+Voici les les règles de nettoyage :
+1. Suppression du contenu entre les sections "Figures Citation" ou "Citation" et "Introduction".
+2. Suppression du contenu à partir de la section "References" jusqu'à la fin du fichier.
+3. Suppression des liens (urls) présents dans le texte.
+4. Suppression des schémas de type `[ 1 – 3 ]`, `[ 1 ]`, `[ 10 ]`, `[ 2 , 3 ]`, `[ 1 ]`.
+5. Suppression des schémas de type `( Fig 5B and 5C )`.
+6. Suppression des titres des sections comme "Abstract", "Introduction" et "Results".
+
+Assurez-vous d'avoir les modules `os` et `re` dans votre environnement Python.
+
+Exemple d'utilisation :
+    - ce script peut être lancé avec la commande simple `python3 clean_corpus.py`
+
+Attention : 
+Ce script modifie les fichiers d'origine.
+"""
+
+
 dossier = '../data/clean/'
 
 def nettoyer_fichier(chemin):
+    """
+    Cette fonction nettoie le contenu d'un fichier en appliquant une série de traitements spécifiques avec le module re.
+
+    Args:
+        chemin (str): chemin complet vers les fichiers à nettoyer.
+
+    Returns:
+        None (puisque le traitement est écrit dans des fichiers)
+    """
+
     with open(chemin, 'r') as f:
         texte = f.read()
 

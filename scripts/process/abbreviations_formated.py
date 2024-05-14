@@ -1,6 +1,34 @@
 import os
 
+"""
+Ce script traite les fichiers d'abréviations en générant des annotations pour les abréviations et les formes longues.
+Les annotations sont ensuite faites automatiquement sur un corpus.
+
+Il définit trois fonctions :
+    -`process_abbreviation_files()`
+    - `extract_long_form_annotations`
+    - `extract_abbreviation_annotation`
+    - `annotate_files_in_directory`
+
+Exemple d'utilisation :
+    - Définir le dossier pour construire le dictionnaire d'annotations (folder_path)
+    - Définir le dossier du corpus à annoter (corpus_folder)
+    - Le script peut être exécuté avec une commande simple : `python3 abbreviations_formated.py`
+
+Note : Ce script utilise le module `os` pour la gestion des fichiers et des répertoires, ainsi que des expressions
+régulières pour le traitement du texte.
+"""
+
 def process_abbreviation_files(folder_path):
+    """
+    Cette fonction génère un dictionnaire d'annotations `annotations_dict` à partir de fichiers `.txt` d'abréviations dans le dossier spécifié.
+
+    Args:
+        folder_path (str): chemin du dossier contenant les fichiers d'abréviations.
+
+    Returns:
+        dict: dictionnaire d'annotations où les clés sont les abréviations ou les formes longues, et les valeurs sont les annotations correspondantes (B-AC, B-LF, I-LF).
+    """
     # Définition du dictionnaire comme variable globale
     global annotations_dict
     # Dictionnaire pour stocker les annotations
@@ -55,6 +83,17 @@ print(annotations)
 
 
 def extract_long_form_annotations(annotations_dict, long_form):
+    """
+    Cette fonction extrait les annotations des formes longues à partir du dictionnaire d'annotations.
+
+    Args:
+        annotations_dict (dict): Dictionnaire d'annotations contenant les informations d'annotation.
+        long_form (str): Forme longue pour laquelle on extrait les annotations.
+
+    Returns:
+        list: Liste de tuples contenant les tokens et leurs étiquettes (labels) associées.
+              Retourne None si la forme longue n'est pas trouvée dans le dictionnaire.
+    """
     # Extraction des annotations des formes longues à partir du dictionnaire
     if long_form in annotations_dict:
         annotations = []
@@ -70,6 +109,17 @@ def extract_long_form_annotations(annotations_dict, long_form):
 
 
 def extract_abbreviation_annotation(annotations_dict, abbreviation):
+    """
+    Cette fonction extrait les annotations des abréviations à partir du dictionnaire d'annotations.
+
+    Args:
+        annotations_dict (dict): Dictionnaire d'annotations contenant les informations d'annotation.
+        abbreviation (str): Abréviation pour laquelle on extrait les annotations.
+
+    Returns:
+        list: Liste de tuples contenant les tokens (abréviations) et leur étiquette (label) associée.
+              Retourne None si l'abréviation n'est pas trouvée dans le dictionnaire.
+    """
     # Extraction des annotations des abréviations à partir du dictionnaire
     if abbreviation in annotations_dict:
         label = annotations_dict[abbreviation]
@@ -82,6 +132,16 @@ def extract_abbreviation_annotation(annotations_dict, abbreviation):
 
 
 def annotate_files_in_directory(root_folder, annotations_dict):
+    """
+    Applique les annotations extraites du dictionnaire aux fichiers `.txt` d'un répertoire spécifié.
+
+    Args:
+        root_folder (str): Répertoire contenant les fichiers `.txt` à annoter.
+        annotations_dict (dict): Dictionnaire d'annotations contenant les informations d'annotation.
+
+    Returns:
+        list: Liste de tuples contenant les annotations pour chaque token du corpus
+    """
     # Parcours des fichiers .txt (corpus)
     for root, dirs, files in os.walk(root_folder):
         for filename in files:

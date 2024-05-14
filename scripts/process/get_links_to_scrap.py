@@ -1,7 +1,26 @@
 import requests
 from lxml import html
-from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+
+
+"""
+Ce script effectue le scraping de différents liens à partir d'une url de base contenue dans la variable url.
+Les liens récupérés dans ce script pourront être réutilisés par la suite
+
+L'environnement Python utilisé pour run ce script a besoin de différentes bibiothèques : 
+    - requests, 
+    - lxml, 
+    - urllib.parse 
+    pour effectuer le scraping et la navigation web. 
+    
+Ce script définit également une fonction `get_link_from_url()` qui prend une url et un chemin XPath comme arguments afin d'extraire différents lien de l'url principale.
+
+Il est possible d'utiliser ce script pour une autre url et pour d'autres chemins XPath, il suffit de changer les valeurs de la variable `url` et de la liste `xpaths`
+
+D'autres modifications pourraient être nécessaires en fonction de la structure du site web à scraper.
+
+"""
+
 
 # URL principale de la page à analyser
 url = "https://plos.org/"
@@ -20,6 +39,16 @@ to_scrap = []
 
 # Récupération du lien complet
 def get_link_from_url(url, xpath):
+    """
+    Cette fonction récupère un lien à partir d'une url. Elle utilise XPath qui localise plusieurs éléments <a> spécifié par le chemin XPath donné.
+
+    Args:
+        url (str): url à partir de laquelle extraire les liens.
+        xpath (str): chemin XPath spécifiant l'emplacement de l'élément <a> contenant le lien à récupérer.
+
+    Returns:
+        str: Lien absolu extrait à partir de l'élément <a> identifié par XPath, ou None si aucun lien n'a été extrait.
+    """
     response = requests.get(url)
     if response.status_code == 200:
         tree = html.fromstring(response.content)

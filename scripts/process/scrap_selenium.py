@@ -9,6 +9,27 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
+
+"""
+Ce script permet de scraper différentes urls contenues dans le dictionnaire main_urls afin de récupérer leurs contenus textuels.
+
+L'environnement Python utilisé pour run ce script a besoin de différents paquets : 
+    - os
+    - time
+    - BeautifulSoup
+    - selenium
+    - un webdriver pour Firefox
+
+Différentes variables sont à modifier si le script doit être réutilisé : 
+    - profile_path qui est le chemin du profile Firefox à utiliser pour le scraping.
+    - geckodriver_path qui est le chemin du Webdriver installé sur votre machine.
+
+
+Chaque article scrapé est enregistré dans un dossier portant le nom de la clé du dictionnaire main_urls, puis dans un fichier .txt
+
+"""
+
+
 # Chemin du profile Firefox
 profile_path = "/home/marie18/snap/firefox/common/.mozilla/firefox/93o6mgh5.default"
 

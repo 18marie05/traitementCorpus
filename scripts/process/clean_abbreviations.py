@@ -1,6 +1,26 @@
 import os
 import re
 
+
+"""
+Ce script traite les fichiers d'abréviations bruts (dossier abbreviations-raw) en filtrant les lignes qui commencent par "Abbreviations". 
+Puis, il crée de nouveaux fichiers nettoyés (dossier abbreviations-clean) contenant uniquement ces lignes.
+
+Le script parcourt un répertoire contenant des fichiers d'abréviations au format texte (.txt).
+Si une ligne commence par "Abbreviations", elles sont gardées.
+Les nouveaux fichiers contenant ces lignes sont sauvegardés dans un répertoire spécifié dans la variable `clean_directory`.
+
+Exemple d'utilisation :
+    - Le script peut être lancé avec la commande simple `python3 clean_abbreviations.py`
+    - Les fichiers générés sont enregistrés dans `data/abbreviations/abbreviations-clean` directement. Aucune création de dossier n'est nécessaire au préalable
+
+Assureé-vous d'avoir les paquets suivant dans votre environnement python : 
+    - os pour manipuler les fichiers et arborescences
+    - re pour manipuler des expressions régulières
+
+"""
+
+
 # Chemin pour les fichiers raw et clean des abbréviations
 raw_directory = 'data/abbreviations/abbreviations-raw'
 clean_directory = 'data/abbreviations/abbreviations-clean'
