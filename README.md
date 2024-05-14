@@ -186,3 +186,20 @@ Lorsqu'on accède aux informations de lignes ou colonnes, on remarque que les ty
 # Séance 4 - Statistiques et visualisation
 ---
 
+Pour cette séance, j'ai choisi différentes statistiques que j'ai trouvées pertinentes pour mon corpus.  
+
+J'ai réalisé des statistiques basiques comme la taille des fichiers de mon corpus.  
+Puis j'ai voulu inspecter les tokens annotés comme des formes longues et abréviations : il y en a très peu comparé au nombre de tokens qui sont annotés B-O.
+
+Ensuite, j'ai fait la même chose au niveau des POS où la classe *NOUN* est la plus représentée.
+
+Ensuite, j'ai voulu observer la tailles de chaque colonne de mon corpus au format csv. Le but est de savoir si j'ai autant de tokens que de pos_tags que de ner_tags : les listes doivent être de mêmes tailles.  
+Le graphique présenté semble montrer un même nombre de ner_tags que de pos_tags, mais pas le même nombre de tokens. Je n'ai pas réussi à comprendre pourquoi.  
+
+Ensuite, j'ai réalisé un graphique avec la Loi de Zipf pour connaître la fréquence des mots de mon corpus.
+
+Pour finir, j'ai décidé de reproduire les statistiques présentées dans le papier de recherche du corpus de référence : un pie plot qui représente la taille des abréviations (en nombre de caractères) et un autre pie plot qui représente la taille des formes longues (en nombre de tokens).  
+Le premier graphique a montré que la majorité des abréviations contiennent 3 puis 4 puis 5 caractères.  
+Le second a montré que la majorité des formes longues contiennent 3 puis 2 puis 4 tokens.  
+
+
