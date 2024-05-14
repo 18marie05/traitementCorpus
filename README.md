@@ -252,3 +252,28 @@ Cette librairie peut être imporée avec `seqeval.metrics`. Il est possible d'ef
 Mais encore une fois, je n'ai pas compris comment effectuer des métriques alors que je n'ai pas de distinction entre *true* et *predicted* puisque le corpus n'a pas servi à un modèle.  
 
 
+# Séance 6 - Split train/test et Dataset Card
+
+Pour cette partie finale, j'ai créé un nouveau notebook dans `notebooks/split_corpus.ipynb`.  
+J'ai testé de faire un split du corpus avec `scikit-learn` et `datasets`.  
+Avec `scikit-learn`, j'ai établit une partition de test à 0.2.  
+Avec `datasets`, j'ai établit une partition test à 0.1.
+
+Voici le split renvoyé par la commande `dataset.train_test_split(test_size=0.1)` qui utilise `datasets`.  
+
+DatasetDict({
+    train: Dataset({
+        features: ['tokens', 'pos_tags', 'ner_tags'],
+        num_rows: 1818
+    })
+    test: Dataset({
+        features: ['tokens', 'pos_tags', 'ner_tags'],
+        num_rows: 203
+    })
+})
+
+
+Une fois le travail terminé, on peut passer à la création de la Dataset Card dans un fichier **.yaml**. Cette carte se trouve à la racine du dépôt dans le fichier `datasetCard.yaml`.  
+
+
+Le travail de constitution de corpus est maintenant terminé.
