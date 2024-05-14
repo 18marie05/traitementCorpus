@@ -18,9 +18,11 @@ Le dossier **data/** contient :
 - **corpus.csv** qui est le fichier du corpus au format csv
 Le corpus brut **raw/** ne figure pas dans le dossier **data/** car il contenait des fichiers plus volumineux : il est dans le .gitignore. 
 
-Le dossier **notebooks/** contient les notebooks de visualisation des statistiques et de l'ouverture du corpus avec pandas.
+Le dossier **notebooks/** contient les notebooks pour : la visualisation des statistiques, l'ouverture du corpus avec pandas, le calcul de la corrélation entre différentes variables et le split du corpus entre train/test/dev.
 
 Le dossier **script/** contient tous les scripts utilisés pour ce travail.
+
+La carte du dataset : **datasetCard.yaml**.
 
 
 **Note**
