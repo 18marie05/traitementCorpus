@@ -251,6 +251,9 @@ J'ai aussi consulté la documentation de Evaluate sur HuggingFace. Dans leurs ca
 Cette librairie peut être imporée avec `seqeval.metrics`. Il est possible d'effectuer des comparaisons d'annotations entre les labels *true* et *predicted*.  
 Mais encore une fois, je n'ai pas compris comment effectuer des métriques alors que je n'ai pas de distinction entre *true* et *predicted* puisque le corpus n'a pas servi à un modèle.  
 
+Concernant l'ORACLE, c'est-à-dire la limite haute qu'il est possible d'obtenir avec ce corpus, on peut la fixer à 0,92 pour la F-mesure. En effet, dans le papier du corpus de référence, les meilleurs résultats obtenus après avoir entraîné le corpus sur des modèles RoBERTa, le meilleur score qu'ils ont obtenu pour la F-mesure était de 0,92. La précision et le rappel étaient respectivement de 0,91 et 0,93.  
+Le résultat le plus bas obtenu toujours avec ce corpus était de 0,82 toujours pour la F-mesure. Ce résultat a été obtenu en entraînant le corpus sur le modèle ALBERTbase.  
+
 
 # Séance 6 - Split train/test et Dataset Card
 
