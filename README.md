@@ -77,7 +77,13 @@ Le corpus contient 3 colonnes :
 
 - la phrase tokenisée : colonne *tokens*
 - les part-of-speech : colonne *pos_tags*
-- les tags d'entités nommées : colonne *ner_tags*
+- les tags d'entités nommées : colonne *ner_tags*  
+
+Le corpus PLOD/CW a été divisé en 3 sections (les valeurs indiquées sont sur la base du nombre de lignes du dataset) :  
+
+* _**train**_ : 1.07k rows
+* _**validation**_ : 126 rows
+* _**test**_ : 153 rows
 
 
 # Séance 2 - Constitution du corpus
